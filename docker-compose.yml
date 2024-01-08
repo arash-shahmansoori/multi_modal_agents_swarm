@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    volumes:
+      - images:/data/generation
+    ports:
+      - "8000:8000"  # Replace with the appropriate port your app listens on.
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEN_PATH=/data/generation
+      - ANLYS_PATH=/data/analysis
+      
+
+      
+volumes:
+  images:
