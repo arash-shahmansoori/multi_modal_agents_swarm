@@ -76,7 +76,7 @@ As the analyzer agent within a hierarchical network, your role is to scrutinize 
 - user query: Analyze [type of content, e.g., image, text] related to [topic]. Ensure every listed [task requirement provided if any] is fully met.
 - Form a generic set of stipulated requirements for analysis as bullet points based on:
     [topic], [task requirement provided if any], and [additional generic set of stipulated requirements for high-quality content analysis]
-    * Note: You are allowed to add any additional generic set of stipulated requirements according to the [topic] and [task requirements provided if any].
+    * Note: You are allowed to add any additional generic set of stipulated requirements according to the [topic] and [task requirements provided if any]. Always include ORIGINALITY and the RELEVANCE to the [subject] among the stipulated requirements.
 - Scrutinize generated content: Make sure that ALL the stipulated requirements in the previous step have been thoroughly met and provide a score v_i for each.
 - Compute the average score based on all stipulated requirements scores, v_i, and provide a concise summary of your analysis.
 - Output: Return the output dictionary based on the following OUTPUT FORMAT.
@@ -149,7 +149,7 @@ As the analyzer agent within a hierarchical network, your role is to scrutinize 
 - user query: Analyze [type of content, e.g., image, text] related to [topic]. Ensure every listed [task requirement provided if any] is fully met.
 - Form a generic set of stipulated requirements for analysis as bullet points based on:
     [topic], [task requirement provided if any], and [additional generic set of stipulated requirements for high-quality content analysis]
-    * Note: You are allowed to add any additional generic set of stipulated requirements according to the [topic] and [task requirements provided if any].
+    * Note: You are allowed to add any additional generic set of stipulated requirements according to the [topic] and [task requirements provided if any]. Always include ORIGINALITY and the RELEVANCE to the [subject] among the stipulated requirements.
 - Scrutinize generated content: Make sure that ALL the stipulated requirements in the previous step have been thoroughly met and provide a score v_i for each.
 - Compute the average score based on all stipulated requirements scores, v_i, and provide a concise summary of your analysis.
 - Output: Return the output dictionary based on the following OUTPUT FORMAT.

@@ -1,33 +1,68 @@
-from typing import List
+def cont_image_user_prompt(subject: str) -> str:
+    prompt = (
+        f"Generate a photo-realistic image of {subject} Analyze the generated image."
+    )
+
+    return prompt
 
 
-def create_requirements(subject: str, color_range: str, texture: str) -> str:
-    requirements_blueprint = f"""
-    1. **Subject**: A prominently featured, detailed {subject}, with petal tips extending to the edges of the image.
-    2. **Color Palette**: Employ a vivid and dynamic color range—orange: {color_range} —to create a visually striking look.
-    3. **Texture and Detail**: Introduce a {texture} into {subject} and background elements, incorporating woven or rippled effects for added depth and a tactile feel.
-    4. **Light and Shadow**: Use highlights and shadows to impart a three-dimensional, luminous quality to the {subject}.
-    5. **Style**: Combine realistic aspects with fantasy to produce a surreal art piece, with exaggerated shapes and flourishes that imply movement.
-    6. **Composition**: Aim for a balanced, symmetrical layout that draws the viewer's attention to the {subject} at the center.
+def gen_image_user_prompt(subject: str) -> str:
+    main_prompt = f"Generate a photo-realistic image of {subject}"
+    additional_details = """
+    # MISSION
+    Create a photo-realistic image in line with specific prompts by coordinating with the Controller and Analyzer Agents. Adhere to and execute the following streamlined process for content generation.
+
+    # METHODOLOGY
+    - Receive image generation prompt with details.
+    - Compile key attributes list based on:
+    - Theme, user's specific requirements, and standards for quality.
+    - Ensure all specifications are met.
+    - Provide generated image URL per the following format.
+
+    # OUTPUT FORMAT
+    - Image content: deliver as an image URL.
+
+    # Example: Futuristic Cityscape Image
+    - Query: Image with flying cars, tall skyscrapers with holographic ads.
+    - Attributes: Futuristic, technologically advanced skyline, flying cars, holographic ads, neon color palette.
+    - Output: Image URL of the futuristic cityscape.
     """
-    return requirements_blueprint
+    prompt = main_prompt + additional_details
+    return prompt
 
 
-def create_user_prompt_gen(subjects: List[str], file_names: List[str]) -> List[str]:
-    user_prompt_gen = []
-    for subject, file_name in zip(subjects, file_names):
-        user_prompt_gen.append(
-            f"Generate a photo-realistic Image of {subject}. Save the file as: {file_name}"
-        )
-    return user_prompt_gen
+def anlys_image_user_prompt(subject: str) -> str:
+    main_prompt = f"Analyze the content"
+    requirements = f"Always include ORIGINALITY and the RELEVANCE to the {subject} among the stipulated requirements."
+    additional_details = """
+    # MISSION
+    Your role as an analyzer agent is to evaluate generated content for quality and compliance with the controller agent's assignments, reporting to it succinctly. Send a confirmation signal to the generator agent after analysis. Assign an integer score (0-10) for each requirement to express satisfaction level. Provide an average score of these as the overall assessment.
 
+    # METHODOLOGY
+    - user query: Analyze [content type] regarding [topic], ensure all [task requirements] are met.
+    - Define a set of analysis criteria based on the content type, topic, and task requirements, including additional criteria as necessary.
+    - Evaluate the content, scoring each criterion.
+    - Summarize the analysis and calculate the average score.
+    - Deliver the results in the specified output format.
 
-def create_user_prompt_anlys(file_name: str) -> str:
-    user_prompt_anlys = f"Analyze the image in file: {file_name} in details."
-    return user_prompt_anlys
+    # OUTPUT FORMAT
+    Provide a dictionary with “summary” and “score” entries, detailing the analysis and the calculated average score.
 
-
-def create_user_prompt_gen_anlys(subject: str, file_name: str) -> str:
-    user_prompt_gen_anlys = f"Generate a photo-realistic Image of {subject} and save the file as: {file_name}. Analyze the generated image in the file {file_name}."
-
-    return user_prompt_gen_anlys
+    Example:
+    - user query: Analyze image about polar fauna under climate change, confirm originality and message delivery.
+    - Criteria and Scores:
+    * Relevance: 9
+    * Originality: 8
+    * Message Clarity: 10
+    * Image Quality: 7
+    * Engagement: 9
+    - Average Score: 8.6
+    - Summary: High relevance and emotional impact are achieved in the analyzed image. It accurately informs on climate change effects on polar wildlife. Some concerns on image quality, suggest enhancement.
+    - Output: 
+    {
+        "summary": "High relevance and emotional impact are achieved in the analyzed image. It accurately informs on climate change effects on polar wildlife. Some concerns on image quality, suggest enhancement.",
+        "score": "8.6"
+    }
+    """
+    prompt = main_prompt + additional_details + requirements
+    return prompt
