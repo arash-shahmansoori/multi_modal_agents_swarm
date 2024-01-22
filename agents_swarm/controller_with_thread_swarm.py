@@ -7,8 +7,7 @@ from typing import Dict, List, NoReturn
 from asteval import Interpreter
 from openai import OpenAI
 
-from prompts import create_user_prompt_gen_anlys
-from type_extensions import Control
+from type_extensions import Analysis, Control, Generation
 
 
 def controller_agent_with_threading_swarm(
@@ -16,6 +15,9 @@ def controller_agent_with_threading_swarm(
     agent_id: str,
     subject: str,
     file_names: List[str],
+    msg_cont: str,
+    anlys_image_user_prompt: Analysis,
+    gen_image_user_prompt: Generation,
     shutdown_event: Event,
     thread_count_gen: int,
     comm: Dict[str, Queue],
@@ -29,6 +31,9 @@ def controller_agent_with_threading_swarm(
         agent_id (str): Controller agent id
         subject (str): The subject of content to be generated
         file_names (List[str]): List of file names to save the generated contents
+        msg_cont (str): Composite task message to the controller
+        anlys_image_user_prompt (Analysis): Callable for analysis user prompt
+        gen_image_user_prompt (Generation): Callable for generation user prompt
         shutdown_event (Event): Shutdown event
         thread_count_gen (int): Thread counts for generation
         comm (Dict[str, Queue]): Queues for communication between agents
@@ -42,10 +47,8 @@ def controller_agent_with_threading_swarm(
     thread = client.beta.threads.create()
 
     for file_name in file_names:
-        user_prompt = create_user_prompt_gen_anlys(subject, file_name)
-
         message = client.beta.threads.messages.create(
-            thread_id=thread.id, role="user", content=user_prompt
+            thread_id=thread.id, role="user", content=msg_cont
         )
         run = client.beta.threads.runs.create(
             thread_id=thread.id, assistant_id=agent_id
@@ -62,14 +65,16 @@ def controller_agent_with_threading_swarm(
 
             for k, _ in cont_msg.items():
                 if k == "gen":
+                    gen_prompt = gen_image_user_prompt(subject)
                     msg_gen = {
-                        "prompt_msg_gen": f"Generate a photo-realistic Image of {subject}",
+                        "prompt_msg_gen": gen_prompt,
                         "file_name": f"{file_name}",
                     }
                     comm.queues["cont_to_gen"].put(msg_gen)
                 elif k == "anlys":
+                    anlys_prompt = anlys_image_user_prompt(subject)
                     msg_anlys = {
-                        "prompt_msg_anlys": f"Analyze the generated image in the file ",
+                        "prompt_msg_anlys": anlys_prompt,
                         "file_name": f"{file_name}",
                     }
                     comm.queues["cont_to_anlys"].put(msg_anlys)

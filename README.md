@@ -1,6 +1,6 @@
 # Concurrent Generative-Analytic Swarms: A Hierarchical Agent-Based Approach for Efficient Multi-Modal Synthesis and Assessment
 
-The implementation of: ``**Concurrent Generative-Analytic Swarms: A Hierarchical Agent-Based Approach for Efficient Multi-Modal Synthesis and Assessment''**. The link to the arXiv paper will be provided soon.
+The implementation of: ``**Harnessing Hierarchical Swarms: A Groundbreaking Approach to Multi-Modal Content Creation''**. https://medium.com/@arash.mansoori65/harnessing-hierarchical-swarms-a-groundbreaking-approach-to-multi-modal-content-creation-061dbcb698f6
 
 ![A futuristic cityscape including flying cars and tall skyscrapers with holographic advertisements.](data/generation/futuristic_cityscape_2.png)
 

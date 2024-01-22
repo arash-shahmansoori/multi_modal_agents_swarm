@@ -8,7 +8,6 @@ from threading import Event
 from typing import Dict, NoReturn
 
 from openai import OpenAI
-from openai.types.beta import Assistant
 
 from type_extensions import Analysis, Function
 
@@ -61,7 +60,10 @@ def analyzer_agent_with_threading_swarm(
                 msg_anlys = comm.queues["cont_to_anlys"].get_nowait()
                 comm.queues["cont_to_anlys"].task_done()
 
-                edited_msg_anlys = msg_anlys["prompt_msg_anlys"] + f"{file_name}"
+                edited_msg_anlys = (
+                    msg_anlys["prompt_msg_anlys"]
+                    + f" The content to analyze is in the file: {file_name}"
+                )
 
                 message = client.beta.threads.messages.create(
                     thread_id=thread.id, role="user", content=edited_msg_anlys

@@ -6,12 +6,7 @@ from agent_funcs_schemes import (
     img_generator_async_fn,
     img_generator_fn,
 )
-from prompts import (
-    create_user_prompt_gen_anlys,
-    system_prompt_anlys,
-    system_prompt_cont,
-    system_prompt_gen,
-)
+from prompts import system_prompt_anlys, system_prompt_cont, system_prompt_gen
 from type_extensions import T
 
 
@@ -42,7 +37,7 @@ def parse_kwargs() -> Dict[str, T]:
     # Set this to the number of available threads for generation for multi agent generation
     # or to one for single agent generation
     num_gen_agent = 1
-    thread_count_gen = 4
+    thread_count_gen = 2
 
     sys_prompt_anlys = system_prompt_anlys
     params_anlys = {
@@ -60,23 +55,17 @@ def parse_kwargs() -> Dict[str, T]:
     # Set this to the number of available threads for analysis for multi agent analysis
     # or to one for single agent analysis
     num_anlys_agent = 1
-    thread_count_anlys = 4
+    thread_count_anlys = 2
 
     file_names = [
         f"futuristic_cityscape_{i}.png" for i in range(1, thread_count_gen + 1)
     ]
-
-    usr_prompts_cont = []
-    for file_name in file_names:
-        usr_prompt_cont = create_user_prompt_gen_anlys(subject, file_name)
-        usr_prompts_cont.append(usr_prompt_cont)
 
     return {
         "params_cont": params_cont,
         "cont_time_out": cont_time_out,
         "num_cont_agent": num_cont_agent,
         "sys_prompt_cont": sys_prompt_cont,
-        "usr_prompts_cont": usr_prompts_cont,
         "params_gen": params_gen,
         "params_gen_async": params_gen_async,
         "gen_time_out": gen_time_out,

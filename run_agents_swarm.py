@@ -12,6 +12,11 @@ from agents_swarm import (
 )
 from communication import ThreadCommunication
 from configs import parse_kwargs
+from prompts import (
+    anlys_image_user_prompt,
+    cont_image_user_prompt,
+    gen_image_user_prompt,
+)
 from shared_components import create_client
 
 
@@ -23,24 +28,20 @@ def main():
 
     client = create_client()
 
+    agents_ids_dir_name = "agents_build/ids/"
+    agents_ids_file_name = "agent_ids.json"
+
+    file_path = os.path.join(agents_ids_dir_name, agents_ids_file_name)
+
     # Make directories to save generation and analysis outputs
     try:
         os.makedirs("data/generation")
         os.makedirs("data/analysis")
-    except FileExistsError:
-        # directory already exists
-        pass
 
-    agents_ids_dir_name = "agents_build/ids/"
-    agents_ids_file_name = "agent_ids.json"
-
-    try:
         os.makedirs(agents_ids_dir_name)
     except FileExistsError:
         # directory already exists
         pass
-
-    file_path = os.path.join(agents_ids_dir_name, agents_ids_file_name)
 
     agents_ids_json = []
 
@@ -90,6 +91,10 @@ def main():
     generator_fn = img_generator
     analyzer_fn = img_file_analyzer
 
+    subject = params["subject"]
+
+    msg_cont = cont_image_user_prompt(subject)
+
     # Create threads
     controller_thread = threading.Thread(
         target=controller_agent_with_threading_swarm,
@@ -98,6 +103,9 @@ def main():
             cont_agent_id,
             params["subject"],
             params["file_names"],
+            msg_cont,
+            anlys_image_user_prompt,
+            gen_image_user_prompt,
             shutdown_event,
             params["thread_count_gen"],
             comm,

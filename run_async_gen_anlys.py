@@ -18,18 +18,14 @@ def main():
 
     client = create_client()
 
+    agents_ids_dir_name = "agents_build/ids/"
+    agents_ids_file_name = "agent_ids_async.json"
+
     # Make directories to save generation and analysis outputs
     try:
         os.makedirs("data_async/generation")
         os.makedirs("data_async/analysis")
-    except FileExistsError:
-        # directory already exists
-        pass
 
-    agents_ids_dir_name = "agents_build/ids/"
-    agents_ids_file_name = "agent_ids_async.json"
-
-    try:
         os.makedirs(agents_ids_dir_name)
     except FileExistsError:
         # directory already exists
@@ -91,7 +87,7 @@ def main():
                 generator_fn,
                 agent_loop_gen_with_func,
             ),
-            name=f"Thread-Analyzer-{i}",
+            name=f"Thread-Generator-{i}",
         )
         for i in range(params["thread_count_gen"])
     ]
